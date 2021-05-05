@@ -2,13 +2,14 @@
   <v-app>
     <my-app-bar></my-app-bar>
     <v-main>
-      <HelloWorld/>
+      <v-container>
+        <router-view></router-view>
+      </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
 import MyAppBar from './components/MyAppBar';
 
 export default {
@@ -16,7 +17,6 @@ export default {
 
   components: {
     MyAppBar,
-    HelloWorld,
   },
 
   data: () => ({

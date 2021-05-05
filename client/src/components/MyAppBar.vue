@@ -15,5 +15,8 @@
       />
       <v-toolbar-title>springboot-vue-boilerplate</v-toolbar-title>
     </div>
+    <v-spacer></v-spacer>
+    <v-btn :to="{path: '/' }" :plain="true">Home</v-btn>
+    <v-btn :to="{path: '/about'}" :plain="true">About</v-btn>
   </v-app-bar>
 </template>
