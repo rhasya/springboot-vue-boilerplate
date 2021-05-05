@@ -2,6 +2,7 @@
 ## included dependencies
 * vue 2
 * vuetify
+* vue-router
 * springboot
 * springboot-devtools
 * springboot-web

@@ -18,5 +18,7 @@
     <v-spacer></v-spacer>
     <v-btn :to="{path: '/' }" :plain="true">Home</v-btn>
     <v-btn :to="{path: '/about'}" :plain="true">About</v-btn>
+    <v-btn :to="{path: '/admin'}" :plain="true">Admin</v-btn>
+    <v-btn :to="{path: '/signin'}" :plain="true">Sign In</v-btn>
   </v-app-bar>
 </template>
