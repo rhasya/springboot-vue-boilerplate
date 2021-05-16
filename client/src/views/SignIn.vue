@@ -1,16 +1,23 @@
 <template>
-  <div class="login-box">
+  <div class="login-box">    
     <h2>Sign in</h2>
-    <div>
-      <v-text-field label="Username"
-        spellcheck="false"
-        v-model="username"/>
-      <v-text-field label="Pasword"
-        type="password"
-        v-model="password"/>
+    <div v-show="ok == 1">
+      <div>
+        <v-text-field label="Username"
+          spellcheck="false"
+          v-model="username"/>
+        <v-text-field label="Pasword"
+          type="password"
+          v-model="password"
+          @keypress.enter="signIn"/>
+      </div>
+      <div class="d-flex">
+        <v-btn color="primary" @click="signIn">Sign In</v-btn>
+      </div>
     </div>
-    <div class="d-flex">
-      <v-btn color="primary" @click="signIn">Sign In</v-btn>
+    <div v-show="ok == 2">
+      <h3>You already signed in.</h3>
+      <v-btn color="primary" @click="signOut"> Sign Out</v-btn>
     </div>
   </div>
 </template>
@@ -19,14 +26,55 @@ export default {
   name: 'SignIn',
   data() {
     return {
-      id: '',
+      ok: 0,
+      username: '',
       password: '',
     }
   },
-  methods: {
+  created() {
+    this.fetchCheck()
+  },
+  watch: {
+    '$route': 'fetchCheck'
+  },
+  methods: {    
+    fetchCheck() {
+      console.log('called')
+      fetch('/check').then((res) => res.json()).then((data) => {
+        if (data && data.ok === "1") {
+          // already login
+          this.ok = 2
+        }
+        else {
+          this.ok = 1
+        }
+      }).catch(() => {
+        this.ok = 1
+      });
+    },
     signIn() {
-      if (this.username == '' || this.password == '') return;
-      alert(`sign in using ${this.username} / ${this.password}`)
+      const {username, password} = this
+      if (username == '' || password == '') {
+        return
+      }
+      fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: encodeURI(`username=${username}&password=${password}`)
+      }).then((res) => {
+        this.username = '';
+        this.password = '';
+        if (res.ok) {
+          this.ok = 2
+        }
+      })
+    },
+    signOut() {
+      fetch('/api/logout').then((res) => {
+        if (res.ok) this.ok = 1
+      })
     }
   }
 }

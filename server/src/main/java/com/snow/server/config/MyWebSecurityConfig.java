@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,6 +28,7 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .headers().frameOptions().disable().and()
                 .formLogin()
+                    .loginProcessingUrl("/api/login")
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .successHandler(new MyAuthenticationSuccessHandler())
@@ -37,6 +37,7 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
                     })
                     .and()
                 .logout()
+                    .logoutUrl("/api/logout")
                     .logoutSuccessHandler((req, res, ex) -> {
                         res.setStatus(HttpServletResponse.SC_OK);
                     });
